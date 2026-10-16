@@ -1,0 +1,45 @@
+{
+  "webServer": {
+    "port": 3000,
+    "host": "0.0.0.0"
+  },
+  "connectionSettings": {
+    "serverAutoConnect": true,
+    "broadcastPort": 8888,
+    "socketTimeout": 5000,
+    "lastIPV4Connection": "127.0.0.1",
+    "lastPortConnection": "5002",
+    "useGameTime": true
+  },
+  "uiSettings": {
+    "theme": "dark",
+    "accentColor": "#007ACC",
+    "enableCalloutPopup": true,
+    "enableTrafficStopPopup": true,
+    "enableIDPopup": true,
+    "use24Hour": false,
+    "playSounds": true
+  },
+  "misc": {
+    "calloutDuration": "30",
+    "TrafficStopDuration": "30",
+    "IDDuration": "25"
+  },
+  "pedHistoryArrest": {
+    "chanceNoCharges": 60,
+    "chanceMinimalCharges": 25,
+    "chanceFewCharges": 10,
+    "chanceManyCharges": 5
+  },
+  "pedHistoryCitation": {
+    "chanceNoCitations": 60,
+    "chanceMinimalCitations": 25,
+    "chanceFewCitations": 10,
+    "chanceManyCitations": 5
+  },
+  "pedHistoryGunPermitClass": {
+    "handgunChance": 50,
+    "shotgunChance": 22,
+    "longgunChance": 28
+  }
+}

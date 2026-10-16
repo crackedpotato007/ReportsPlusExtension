@@ -1,0 +1,48 @@
+[
+  {
+    "type": "Citation Report",
+    "offenderName": "Lawrence Baptiste",
+    "plateNumber": "",
+    "citationType": "Printed Citation",
+    "charges": [
+      "Impeding Flow of Traffic"
+    ],
+    "totalFine": 237,
+    "location": "Vinewood Blvd, Downtown Vinewood",
+    "narrative": "",
+    "officerName": "John Davis",
+    "number": "RPT-36445",
+    "timestamp": "2026-10-16T19:15:38.136Z",
+    "status": "Submitted"
+  },
+  {
+    "type": "Citation Report",
+    "offenderName": "David McReary",
+    "plateNumber": "",
+    "citationType": "Printed Citation",
+    "charges": [],
+    "totalFine": 200,
+    "location": "Marathon Ave, Del Perro",
+    "narrative": "",
+    "officerName": "John Davis",
+    "number": "RPT-33480",
+    "timestamp": "2026-10-16T19:01:24.884Z",
+    "status": "Submitted"
+  },
+  {
+    "narrative": "Radar clocked vehicle at 85 in a 45 zone.",
+    "type": "Citation Report",
+    "citationType": "Printed Citation",
+    "officerName": "John Davis",
+    "offenderName": "Audrey Jackson",
+    "location": "Vinewood Blvd",
+    "totalFine": 700,
+    "charges": [
+      "Speeding (Over 30+)"
+    ],
+    "plateNumber": "46EEK572",
+    "number": "RPT-91000",
+    "timestamp": "2026-10-16T16:31:38.982Z",
+    "status": "Submitted"
+  }
+]

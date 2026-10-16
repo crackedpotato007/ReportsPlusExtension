@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ReportsPlus - Web MDT</title>
+  <link rel="stylesheet" href="/css/mdt.css">
+  <link rel="icon" type="image/png" href="/imgs/icons/Logo.png">
+</head>
+<body>
+
+  <!-- Top Navigation / Status Header -->
+  <header class="mdt-header">
+    <div class="mdt-brand">
+      <img src="/imgs/icons/Logo.png" alt="ReportsPlus Logo" class="mdt-logo">
+      <div class="mdt-title">
+        ReportsPlus
+        <span class="mdt-badge">WEB MDT</span>
+      </div>
+    </div>
+
+    <div class="top-metrics">
+      <!-- Connection Status -->
+      <div class="metric-item" id="connectionStatusBtn" title="Click to view connection settings">
+        <span class="status-dot status-offline" id="statusDot"></span>
+        <span id="connectionStatusText">Host: Connecting...</span>
+      </div>
+
+      <!-- Live Location Ticker -->
+      <div class="metric-item" id="locationTickerBtn" title="Click to copy street name">
+        <img src="/imgs/icons/location.png" width="14" height="14" alt="Location">
+        <span id="locationDisplay">Vinewood Blvd, Los Santos</span>
+      </div>
+
+      <!-- Game Time -->
+      <div class="metric-item" id="gameClockBtn">
+        <span class="font-mono" id="gameClockDisplay">--:-- --</span>
+      </div>
+
+      <!-- Officer Profile Button -->
+      <div class="metric-item" id="officerProfileBtn" title="Switch Officer Profile">
+        <img src="/imgs/icons/Apps/profile.png" width="14" height="14" alt="Officer">
+        <span id="officerDisplay">Officer</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MDT View Tabs Navigation -->
+  <nav class="mdt-nav">
+    <button class="nav-tab active" data-tab="dashboard">
+      <img src="/imgs/icons/Logo.png" alt="Dashboard">
+      Dashboard
+    </button>
+    <button class="nav-tab" data-tab="pedLookup">
+      <img src="/imgs/icons/Apps/ped-search.png" alt="Ped Lookup">
+      Ped Lookup
+    </button>
+    <button class="nav-tab" data-tab="vehLookup">
+      <img src="/imgs/icons/Apps/veh-search.png" alt="Veh Lookup">
+      Veh Lookup
+    </button>
+    <button class="nav-tab" data-tab="callouts">
+      <img src="/imgs/icons/Apps/callout.png" alt="Callouts">
+      Callouts <span class="tag tag-yellow" id="activeCalloutsCount">0</span>
+    </button>
+    <button class="nav-tab" data-tab="alpr">
+      <img src="/imgs/icons/Apps/alpr.png" alt="ALPR">
+      ALPR
+    </button>
+    <button class="nav-tab" data-tab="court">
+      <img src="/imgs/icons/Apps/courtIcon.png" alt="Court">
+      Court Cases
+    </button>
+    <button class="nav-tab" data-tab="reports">
+      <img src="/imgs/icons/Apps/new-report.png" alt="Reports">
+      Reports
+    </button>
+    <button class="nav-tab" data-tab="notepad">
+      <img src="/imgs/icons/Apps/notepad.png" alt="Notepad">
+      Field Notes
+    </button>
+    <button class="nav-tab" data-tab="settings">
+      <img src="/imgs/icons/Apps/setting.png" alt="Settings">
+      Settings
+    </button>
+  </nav>
+
+  <!-- Main Workspace -->
+  <main class="mdt-container">
+
+    <!-- ======================================================== -->
+    <!-- VIEW: DASHBOARD                                          -->
+    <!-- ======================================================== -->
+    <section id="view-dashboard" class="view-section active">
+      <div class="grid-2">
+        <!-- Quick Search Card -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Quick NCIC / DMV Lookup</span>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label class="form-label">Pedestrian Name or License #</label>
+              <div style="display: flex; gap: 0.5rem;">
+                <input type="text" id="quickPedInput" class="form-input" placeholder="e.g. John Doe">
+                <button class="btn btn-primary" id="quickPedBtn">Search</button>
+              </div>
+            </div>
+            <div>
+              <label class="form-label">Vehicle License Plate or VIN</label>
+              <div style="display: flex; gap: 0.5rem;">
+                <input type="text" id="quickVehInput" class="form-input" placeholder="e.g. 46EEK572">
+                <button class="btn btn-cyan" id="quickVehBtn">Search</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Current Unit Info -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Active Unit Status</span>
+            <span class="tag tag-green">10-8 IN SERVICE</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <h3 id="dashOfficerName" style="color: #fff; font-size: 1.1rem; margin-bottom: 0.25rem;">Officer</h3>
+              <p id="dashOfficerAgency" style="color: var(--text-secondary); font-size: 0.85rem;">Los Santos Police Department</p>
+              <p id="dashOfficerBadge" style="color: var(--accent-cyan); font-size: 0.8rem; margin-top: 0.25rem;">Badge #1842 | Callsign: 1-L-18</p>
+            </div>
+            <button class="btn btn-secondary" id="dashSwitchProfileBtn">Change Profile</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Callouts & ALPR Split -->
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Active Dispatch Callouts</span>
+            <button class="btn btn-secondary btn-sm" id="dashViewAllCallouts">View CAD</button>
+          </div>
+          <div id="dashActiveCalloutsList">
+            <p style="color: var(--text-muted); font-size: 0.85rem; padding: 1rem 0;">No active emergency calls.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Latest ALPR Scans</span>
+            <button class="btn btn-secondary btn-sm" id="dashViewAllALPR">View ALPR</button>
+          </div>
+          <div id="dashRecentALPRList">
+            <p style="color: var(--text-muted); font-size: 0.85rem; padding: 1rem 0;">No vehicle scans recorded yet.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW: PEDESTRIAN LOOKUP                                  -->
+    <!-- ======================================================== -->
+    <section id="view-pedLookup" class="view-section">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Pedestrian Records Lookup</span>
+          <button class="btn btn-secondary" id="randomPedBtn">Generate Random Ped</button>
+        </div>
+        <div style="display: flex; gap: 0.75rem; max-width: 600px;">
+          <input type="text" id="pedSearchInput" class="form-input" placeholder="Enter Full Name (e.g. John Doe) or License #">
+          <button class="btn btn-primary" id="pedSearchBtn">Search Records</button>
+        </div>
+      </div>
+
+      <!-- Pedestrian Result Display -->
+      <div id="pedResultContainer" style="display: none;">
+        <div class="grid-3">
+          <!-- Mugshot & Basic Demographics -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Subject Identity</span>
+              <span id="pedWarrantBadge"></span>
+            </div>
+            <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+              <div style="width: 80px; height: 95px; background: var(--bg-secondary); border: 2px solid var(--border-color); border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                <img src="/imgs/icons/Apps/profile.png" id="pedAvatarImg" style="width: 60px; height: 60px; opacity: 0.6;" alt="Mugshot">
+              </div>
+              <div>
+                <h2 id="pedFullName" style="font-size: 1.25rem; color: #fff; margin-bottom: 0.2rem;">--</h2>
+                <p id="pedGenderAge" style="color: var(--text-secondary); font-size: 0.85rem;">--</p>
+                <p id="pedBirthday" style="color: var(--text-muted); font-size: 0.8rem;">DOB: --</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <span class="form-label">Physical Build</span>
+              <div id="pedBuild" style="font-size: 0.9rem; color: #fff;">--</div>
+            </div>
+            <div class="form-group">
+              <span class="form-label">Residential Address</span>
+              <div id="pedAddress" style="font-size: 0.9rem; color: #fff;">--</div>
+            </div>
+          </div>
+
+          <!-- Licensing & Permits -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Licensing & Permits</span>
+            </div>
+            <div class="form-group">
+              <span class="form-label">Driver's License Status</span>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span id="pedLicenseStatus" class="tag tag-green">VALID</span>
+                <span id="pedLicenseExp" style="font-size: 0.8rem; color: var(--text-muted);">Exp: --</span>
+              </div>
+              <div style="font-size: 0.85rem; font-family: var(--font-mono); color: var(--text-secondary); margin-top: 0.25rem;">
+                No: <span id="pedLicenseNumber">--</span>
+              </div>
+            </div>
+            <div class="form-group" style="margin-top: 1rem;">
+              <span class="form-label">Firearms Permit</span>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span id="pedGunStatus" class="tag tag-yellow">--</span>
+                <span id="pedGunClass" style="font-size: 0.8rem; color: var(--text-secondary);">--</span>
+              </div>
+            </div>
+            <div class="form-group" style="margin-top: 1rem;">
+              <span class="form-label">Hunting & Fishing Permits</span>
+              <div style="font-size: 0.85rem; color: var(--text-secondary);">
+                Fishing: <span id="pedFishPermit" class="tag tag-green">VALID</span> | Hunting: <span id="pedHuntPermit" class="tag tag-yellow">NONE</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Criminal History & Flags -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Criminal Record & Flags</span>
+            </div>
+            <div class="form-group">
+              <span class="form-label">Caution / Officer Safety Flags</span>
+              <div id="pedFlagsContainer" style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.25rem;">
+                <span style="color: var(--text-muted); font-size: 0.8rem;">No safety flags on record.</span>
+              </div>
+            </div>
+            <div class="form-group" style="margin-top: 1rem;">
+              <span class="form-label">Prior Encounters</span>
+              <div style="display: flex; gap: 1rem; font-size: 0.9rem;">
+                <div>Arrests: <span id="pedArrestPriors" style="font-weight: 700; color: #fff;">0</span></div>
+                <div>Citations: <span id="pedCitationPriors" style="font-weight: 700; color: #fff;">0</span></div>
+                <div>Total Stops: <span id="pedTotalStops" style="font-weight: 700; color: #fff;">0</span></div>
+              </div>
+            </div>
+            <!-- Quick Actions -->
+            <div style="display: flex; gap: 0.5rem; margin-top: 1.25rem;">
+              <button class="btn btn-danger btn-sm" id="pedIssueCitationBtn">Issue Citation</button>
+              <button class="btn btn-primary btn-sm" id="pedArrestReportBtn">Arrest Report</button>
+              <button class="btn btn-secondary btn-sm" id="pedAddNotesBtn">Add To Notes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW: VEHICLE LOOKUP                                     -->
+    <!-- ======================================================== -->
+    <section id="view-vehLookup" class="view-section">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Vehicle DMV & Registration Records</span>
+          <button class="btn btn-secondary" id="randomVehBtn">Generate Random Vehicle</button>
+        </div>
+        <div style="display: flex; gap: 0.75rem; max-width: 600px;">
+          <input type="text" id="vehSearchInput" class="form-input font-mono" placeholder="Enter License Plate or VIN">
+          <button class="btn btn-cyan" id="vehSearchBtn">Run DMV Query</button>
+        </div>
+      </div>
+
+      <div id="vehResultContainer" style="display: none;">
+        <div class="grid-2">
+          <!-- Plate Graphic & Specs -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Vehicle Identification</span>
+              <span id="vehStolenBadge"></span>
+            </div>
+            
+            <!-- License Plate Graphic Frame -->
+            <div style="background: url('/imgs/LicensePlate.png') no-repeat center; background-size: contain; width: 240px; height: 120px; margin: 0.5rem auto 1.25rem; display: flex; align-items: center; justify-content: center;">
+              <span id="vehPlateGraphicText" class="font-mono" style="font-size: 2.1rem; font-weight: 900; color: #1e3a8a; letter-spacing: 0.12em; text-shadow: 1px 1px 0 rgba(255,255,255,0.8); margin-top: 15px;">
+                --------
+              </span>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <span class="form-label">Make & Model</span>
+                <div id="vehMakeModel" style="font-size: 1.05rem; font-weight: 700; color: #fff;">--</div>
+              </div>
+              <div class="form-group">
+                <span class="form-label">Classification</span>
+                <div id="vehType" style="font-size: 0.95rem; color: var(--text-secondary);">--</div>
+              </div>
+              <div class="form-group">
+                <span class="form-label">Color</span>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span id="vehColorSwatch" style="width: 16px; height: 16px; border-radius: 4px; border: 1px solid #fff; display: inline-block;"></span>
+                  <span id="vehColorName" style="font-size: 0.95rem; color: #fff;">--</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <span class="form-label">VIN #</span>
+                <div id="vehVin" class="font-mono" style="font-size: 0.85rem; color: var(--text-secondary);">--</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Registration, Insurance & Owner -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Registration & Ownership</span>
+            </div>
+            <div class="form-group">
+              <span class="form-label">Registered Owner</span>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span id="vehOwner" style="font-size: 1.1rem; font-weight: 700; color: #fff;">--</span>
+                <button class="btn btn-secondary btn-sm" id="vehLookupOwnerBtn">Search Owner</button>
+              </div>
+            </div>
+            <div class="form-group" style="margin-top: 1rem;">
+              <span class="form-label">Registration Status</span>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span id="vehRegStatus" class="tag tag-green">VALID</span>
+                <span id="vehRegExp" style="font-size: 0.8rem; color: var(--text-muted);">Exp: --</span>
+              </div>
+            </div>
+            <div class="form-group" style="margin-top: 1rem;">
+              <span class="form-label">Insurance Status</span>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span id="vehInsStatus" class="tag tag-green">VALID</span>
+                <span id="vehInspectionStatus" style="font-size: 0.8rem; color: var(--text-muted);">Inspection: Valid</span>
+              </div>
+            </div>
+            <!-- Quick Actions -->
+            <div style="display: flex; gap: 0.5rem; margin-top: 1.5rem;">
+              <button class="btn btn-primary btn-sm" id="vehTrafficStopReportBtn">Traffic Stop Report</button>
+              <button class="btn btn-danger btn-sm" id="vehImpoundReportBtn">Impound Report</button>
+              <button class="btn btn-secondary btn-sm" id="vehAddNotesBtn">Add To Notes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW: CALLOUTS / CAD                                     -->
+    <!-- ======================================================== -->
+    <section id="view-callouts" class="view-section">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Active 911 / CAD Callouts</span>
+          <button class="btn btn-secondary btn-sm" id="createCalloutModalBtn">+ New Manual Callout</button>
+        </div>
+        <div class="table-container">
+          <table class="mdt-table">
+            <thead>
+              <tr>
+                <th>Call #</th>
+                <th>Priority</th>
+                <th>Nature / Type</th>
+                <th>Location</th>
+                <th>Dispatched</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="calloutsTableBody">
+              <tr>
+                <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">No active callouts.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Completed Callout History -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Callout History</span>
+        </div>
+        <div class="table-container">
+          <table class="mdt-table">
+            <thead>
+              <tr>
+                <th>Call #</th>
+                <th>Priority</th>
+                <th>Nature / Type</th>
+                <th>Location</th>
+                <th>Time</th>
+                <th>Outcome</th>
+              </tr>
+            </thead>
+            <tbody id="calloutsHistoryTableBody">
+              <tr>
+                <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">No historical callouts.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW: ALPR                                               -->
+    <!-- ======================================================== -->
+    <section id="view-alpr" class="view-section">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Automatic License Plate Recognition Feed</span>
+          <button class="btn btn-secondary btn-sm" id="clearALPRBtn">Clear Log</button>
+        </div>
+        <div class="table-container">
+          <table class="mdt-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Plate Number</th>
+                <th>Plate Type</th>
+                <th>Speed</th>
+                <th>Scanner</th>
+                <th>Flags / Alerts</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="alprTableBody">
+              <tr>
+                <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 2rem;">No recent ALPR scans received from patrol car.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW: COURT CASES                                        -->
+    <!-- ======================================================== -->
+    <section id="view-court" class="view-section">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">San Andreas Judicial Court Cases</span>
+          <button class="btn btn-secondary btn-sm" id="refreshCourtBtn">Refresh Trials</button>
+        </div>
+        <div class="table-container">
+          <table class="mdt-table">
+            <thead>
+              <tr>
+                <th>Case #</th>
+                <th>Defendant</th>
+                <th>Charges / Citations</th>
+                <th>Court Date</th>
+                <th>Status</th>
+                <th>Verdict</th>
+                <th>Penalties Imposed</th>
+              </tr>
+            </thead>
+            <tbody id="courtTableBody">
+              <tr>
+                <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 2rem;">No court cases currently scheduled.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW: REPORTS                                            -->
+    <!-- ======================================================== -->
+    <section id="view-reports" class="view-section">
+      <div class="grid-2">
+        <!-- New Report Form -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Submit Incident / Citation Report</span>
+          </div>
+          <form id="newReportForm">
+            <div class="form-group">
+              <label class="form-label">Report Category</label>
+              <select id="reportTypeSelect" class="form-select">
+                <option value="Citation Report">Citation Report</option>
+                <option value="Arrest Report">Arrest Report</option>
+                <option value="Traffic Stop Report">Traffic Stop Report</option>
+                <option value="Incident Report">Incident Report</option>
+                <option value="Callout Report">Callout Report</option>
+                <option value="Impound Report">Impound Report</option>
+                <option value="Use of Force Report">Use of Force Report</option>
+              </select>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Offender / Subject Name</label>
+                <input type="text" id="reportOffenderName" class="form-input" placeholder="First Last">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Vehicle Plate (If Applicable)</label>
+                <input type="text" id="reportPlateNumber" class="form-input font-mono" placeholder="Plate #">
+              </div>
+            </div>
+
+            <div class="form-group" id="citationTypeGroup">
+              <label class="form-label">Citation Type</label>
+              <select id="reportCitationType" class="form-select">
+                <option value="Non-Printed">Non-Printed Citation</option>
+                <option value="Printed Citation">Printed Citation</option>
+                <option value="Parking Citation">Parking Citation</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Select Violations / Offenses</label>
+              <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <select id="chargePickerSelect" class="form-select"></select>
+                <button type="button" class="btn btn-secondary" id="addChargeBtn">Add</button>
+              </div>
+              <div id="selectedChargesList" style="display: flex; flex-direction: column; gap: 0.35rem;"></div>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Total Fine Amount ($)</label>
+                <input type="number" id="reportTotalFine" class="form-input font-mono" value="0">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Location</label>
+                <input type="text" id="reportLocation" class="form-input" placeholder="Street, Area">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Officer Narrative & Details</label>
+              <textarea id="reportNarrative" class="form-textarea" rows="4" placeholder="Enter incident report narrative..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Official Report</button>
+          </form>
+        </div>
+
+        <!-- Filed Reports Log -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Filed Reports Log</span>
+          </div>
+          <div class="table-container" style="max-height: 600px; overflow-y: auto;">
+            <table class="mdt-table">
+              <thead>
+                <tr>
+                  <th>Report #</th>
+                  <th>Type</th>
+                  <th>Subject</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="filedReportsTableBody">
+                <tr>
+                  <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">No reports on file.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW: FIELD NOTEPAD                                      -->
+    <!-- ======================================================== -->
+    <section id="view-notepad" class="view-section">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Officer Field Notepad</span>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">Auto-extracts tags: -name, -plate, -st, -model</span>
+        </div>
+        <textarea id="notepadTextarea" class="form-textarea font-mono" rows="14" placeholder="Shift notes... e.g. -name John Doe -plate 46EEK572 -st Vinewood Blvd"></textarea>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+          <div id="notepadExtractedTags" style="display: flex; gap: 0.5rem; flex-wrap: wrap;"></div>
+          <button class="btn btn-primary" id="saveNotepadBtn">Save Notes</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW: SETTINGS                                           -->
+    <!-- ======================================================== -->
+    <section id="view-settings" class="view-section">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">MDT Server & Device Connectivity</span>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1rem;">
+            To access this MDT from an iPad, iPhone, Android device, or laptop on the same Wi-Fi, open any of the following URLs in your mobile browser:
+          </p>
+          <div id="deviceUrlsList" style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.75rem; margin-bottom: 1.25rem; font-family: var(--font-mono); font-size: 0.9rem; color: var(--accent-cyan);">
+            Loading network addresses...
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">GTA V / LSPDFR Host IP Address</label>
+            <input type="text" id="settingHostIp" class="form-input" placeholder="127.0.0.1">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Host TCP Port</label>
+            <input type="number" id="settingHostPort" class="form-input" placeholder="5455">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Auto-Discovery UDP Port</label>
+            <input type="number" id="settingUdpPort" class="form-input" placeholder="8888">
+          </div>
+          <button class="btn btn-primary" id="saveConnectionSettingsBtn">Save & Connect</button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Display & Alerts</span>
+          </div>
+          <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
+            <label class="form-label" style="margin: 0;">Play Dispatch & Radar Audio Tones</label>
+            <input type="checkbox" id="settingPlaySounds" checked style="width: 20px; height: 20px;">
+          </div>
+          <div class="form-group" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+            <label class="form-label" style="margin: 0;">24-Hour Time Format</label>
+            <input type="checkbox" id="setting24HourTime" style="width: 20px; height: 20px;">
+          </div>
+          <div class="form-group" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+            <label class="form-label" style="margin: 0;">Automatic Callout Popup</label>
+            <input type="checkbox" id="settingCalloutPopup" checked style="width: 20px; height: 20px;">
+          </div>
+          <div class="form-group" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+            <label class="form-label" style="margin: 0;">Auto-Respond to Dispatches (Instant Responded status)</label>
+            <input type="checkbox" id="settingAutoRespondCallout" style="width: 20px; height: 20px;">
+          </div>
+          <div class="form-group" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+            <label class="form-label" style="margin: 0;">Automatic Traffic Stop Popup</label>
+            <input type="checkbox" id="settingTrafficStopPopup" checked style="width: 20px; height: 20px;">
+          </div>
+          <div class="form-group" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+            <label class="form-label" style="margin: 0;">Automatic ID Card Popup</label>
+            <input type="checkbox" id="settingIDPopup" checked style="width: 20px; height: 20px;">
+          </div>
+          <button class="btn btn-primary" id="saveUiSettingsBtn" style="margin-top: 1.5rem;">Save Preferences</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: INCOMING CALLOUT DISPATCH POPUP                    -->
+  <!-- ======================================================== -->
+  <div class="modal-overlay" id="calloutModal">
+    <div class="modal-box" style="max-width: 550px; border: 2px solid var(--accent-blue);">
+      <div class="card-header" style="background: rgba(0, 122, 204, 0.15); margin: -1.25rem -1.25rem 1rem -1.25rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--accent-blue);">
+        <span class="card-title" style="color: #fff; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <img src="/imgs/icons/Apps/callout.png" width="22" height="22" alt="Callout">
+          🚨 Incoming Dispatch Callout <span id="calloutPopupNum" class="font-mono" style="color: var(--accent-cyan); font-weight: 700;">#000</span>
+        </span>
+        <span id="calloutPopupPriority" class="tag tag-red">CODE 3</span>
+      </div>
+      
+      <div class="grid-2" style="margin-bottom: 1rem;">
+        <div class="form-group">
+          <span class="form-label">Nature / Type</span>
+          <div id="calloutPopupType" style="font-size: 1.15rem; font-weight: 700; color: #fff;">--</div>
+        </div>
+        <div class="form-group">
+          <span class="form-label">Current Status</span>
+          <div id="calloutPopupStatus"><span class="tag tag-red">Not Responded</span></div>
+        </div>
+        <div class="form-group" style="grid-column: 1 / -1;">
+          <span class="form-label">Location</span>
+          <div id="calloutPopupLocation" style="font-size: 1.05rem; font-weight: 600; color: var(--accent-cyan);">--</div>
+        </div>
+        <div class="form-group" style="grid-column: 1 / -1;">
+          <span class="form-label">Dispatch Notes</span>
+          <div id="calloutPopupDesc" style="font-size: 0.9rem; color: var(--text-secondary); background: var(--bg-secondary); padding: 0.75rem; border-radius: 6px; min-height: 40px;">--</div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1.25rem;">
+        <button class="btn btn-secondary btn-sm" id="calloutIgnoreBtn">Ignore</button>
+        <button class="btn btn-warning btn-sm" id="calloutEnRouteBtn">En Route</button>
+        <button class="btn btn-success" id="calloutRespondBtn" style="padding: 0.5rem 1.25rem; font-weight: 700;">Respond (Accept)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: SAN ANDREAS DRIVER LICENSE CARD                   -->
+  <!-- ======================================================== -->
+  <div class="modal-overlay" id="idCardModal">
+    <div class="modal-box" style="background: transparent; border: none; padding: 0; max-width: 480px;">
+      <div class="driver-license-card">
+        <div class="dl-header">
+          <div>
+            <div class="dl-state">SAN ANDREAS</div>
+            <div class="dl-title">DRIVER LICENSE</div>
+          </div>
+          <div style="text-align: right;">
+            <span class="tag tag-green" id="idCardStatus">VALID</span>
+          </div>
+        </div>
+        <div class="dl-body">
+          <div class="dl-photo">
+            <img src="/imgs/icons/Apps/profile.png" alt="ID Photo">
+          </div>
+          <div class="dl-details">
+            <div class="dl-lic-num">DL <span id="idCardLicNum">D1847294</span></div>
+            <div class="dl-name" id="idCardName">MICHAEL DE SANTA</div>
+            <div id="idCardAddress" style="color: #475569; margin: 0.25rem 0;">302 Portola Drive, Rockford Hills</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.25rem; font-size: 0.75rem; margin-top: 0.35rem;">
+              <div>DOB: <b id="idCardDob">04/23/1968</b></div>
+              <div>SEX: <b id="idCardSex">M</b></div>
+              <div>HGT: <b id="idCardHgt">6' 2"</b></div>
+              <div>WGT: <b id="idCardWgt">195 lbs</b></div>
+              <div>EXP: <b id="idCardExp">12/31/2028</b></div>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+          <button class="btn btn-primary btn-sm" id="idCardSearchPedBtn" style="flex: 1;">Search in Ped Lookup</button>
+          <button class="btn btn-secondary btn-sm" id="idCardCloseBtn">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: TRAFFIC STOP NOTIFICATION                         -->
+  <!-- ======================================================== -->
+  <div class="modal-overlay" id="trafficStopModal">
+    <div class="modal-box">
+      <div class="card-header">
+        <span class="card-title">
+          <img src="/imgs/icons/trafficStop.png" width="20" height="20" alt="Stop">
+          Traffic Stop Initiated
+        </span>
+        <span class="tag tag-yellow">10-11 ACTIVE STOP</span>
+      </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <span class="form-label">Vehicle</span>
+          <div id="tsVehicle" style="font-size: 1.1rem; font-weight: 700; color: #fff;">--</div>
+        </div>
+        <div class="form-group">
+          <span class="form-label">License Plate</span>
+          <div id="tsPlate" class="font-mono" style="font-size: 1.1rem; font-weight: 700; color: var(--accent-cyan);">--</div>
+        </div>
+        <div class="form-group">
+          <span class="form-label">Driver / Registered Owner</span>
+          <div id="tsOwner" style="font-size: 1rem; color: #fff;">--</div>
+        </div>
+        <div class="form-group">
+          <span class="form-label">Registration / Insurance</span>
+          <div id="tsRegIns" style="font-size: 0.9rem; color: var(--text-secondary);">--</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 0.5rem; margin-top: 1.25rem;">
+        <button class="btn btn-cyan btn-sm" id="tsSearchDMVBtn">DMV Query</button>
+        <button class="btn btn-danger btn-sm" id="tsCitationBtn">Issue Citation</button>
+        <button class="btn btn-secondary btn-sm" id="tsCloseBtn">Dismiss</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: OFFICER PROFILE SWITCHER                          -->
+  <!-- ======================================================== -->
+  <div class="modal-overlay" id="profileModal">
+    <div class="modal-box">
+      <div class="card-header">
+        <span class="card-title">Officer Profile Management</span>
+        <button class="btn btn-secondary btn-sm" id="closeProfileModalBtn">X</button>
+      </div>
+      <div id="profilesListContainer" style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem;"></div>
+      
+      <div style="border-top: 1px solid var(--border-color); padding-top: 1rem;">
+        <h4 style="color: #fff; font-size: 0.95rem; margin-bottom: 0.75rem;">Create New Officer Profile</h4>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Officer Name</label>
+            <input type="text" id="newProfName" class="form-input" placeholder="e.g. John Davis">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Agency</label>
+            <select id="newProfAgency" class="form-select"></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Rank</label>
+            <input type="text" id="newProfRank" class="form-input" placeholder="Police Officer II">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Badge Number</label>
+            <input type="text" id="newProfNumber" class="form-input" placeholder="1842">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Callsign</label>
+            <input type="text" id="newProfCallsign" class="form-input" placeholder="1-L-18">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Division</label>
+            <input type="text" id="newProfDivision" class="form-input" placeholder="Patrol Operations">
+          </div>
+        </div>
+        <button class="btn btn-primary" id="saveNewProfileBtn" style="width: 100%; margin-top: 0.5rem;">Save & Select Officer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Main Application Script -->
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

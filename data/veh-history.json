@@ -1,0 +1,46 @@
+[
+  {
+    "plateNumber": "05KBL982",
+    "model": "Baller",
+    "color": "8-8-8",
+    "owner": "Lawrence Baptiste",
+    "registrationStatus": "Expired",
+    "insuranceStatus": "Expired",
+    "stolen": false,
+    "flags": [
+      "Reg: Expired",
+      "Ins: Expired"
+    ],
+    "isProcedural": false,
+    "fromWorld": true
+  },
+  {
+    "plateNumber": "64BUD334",
+    "model": "Picador",
+    "color": "71-14-14",
+    "owner": "David McReary",
+    "registrationStatus": "Valid",
+    "insuranceStatus": "Valid",
+    "stolen": false,
+    "flags": [],
+    "isProcedural": false,
+    "fromWorld": true
+  },
+  {
+    "plateNumber": "46EEK572",
+    "model": "habanero",
+    "make": "Emperor",
+    "type": "SUV",
+    "color": "Olive Green",
+    "colorHex": "#556b2f",
+    "vin": "PZYLGV4YLXULRHY0H",
+    "registration": "Suspended",
+    "registrationExpiration": "05/17/2023",
+    "insurance": "Valid",
+    "stolenStatus": "Yes",
+    "policeStatus": "No",
+    "owner": "Audrey Jackson",
+    "inspection": "Valid",
+    "isProcedural": true
+  }
+]

@@ -1,0 +1,29 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build and IDE
+.idea/
+.vscode/
+bin/
+obj/
+target/
+*.iws
+*.iml
+*.ipr
+.DS_Store
+
+# Temporary & Decompiled Dumps
+tools/
+ReportsPlusDll/
+ReportsPlus_dnspy/
+*.bak
+*.orig
+*.log
+
+# Windows & OS
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini

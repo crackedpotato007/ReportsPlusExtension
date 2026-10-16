@@ -1,0 +1,199 @@
+{
+  "active": [
+    {
+      "number": "87713",
+      "type": "Robbery in progress",
+      "description": "",
+      "message": "",
+      "priority": "default",
+      "street": "North Rockford Dr",
+      "area": "Del Perro",
+      "county": "LosSantos",
+      "startTime": "12:47:56 AM",
+      "startDate": "2026-10-17",
+      "status": "Responded",
+      "updates": [
+        "Call dispatched to unit."
+      ]
+    },
+    {
+      "number": "80398",
+      "type": "Robbery in progress",
+      "description": "",
+      "message": "",
+      "priority": "default",
+      "street": "Innocence Blvd",
+      "area": "Strawberry",
+      "county": "LosSantos",
+      "startTime": "12:45:43 AM",
+      "startDate": "2026-10-17",
+      "status": "Not Responded",
+      "updates": [
+        "Call dispatched to unit."
+      ]
+    },
+    {
+      "number": "14882",
+      "type": "Pursuit in progress",
+      "description": "",
+      "message": "",
+      "priority": "default",
+      "street": "Autopia Pkwy",
+      "area": "Los Santos International",
+      "county": "LosSantos",
+      "startTime": "12:40:45 AM",
+      "startDate": "2026-10-17",
+      "status": "Not Responded",
+      "updates": [
+        "Call dispatched to unit."
+      ]
+    },
+    {
+      "number": "74105",
+      "type": "Robbery in progress",
+      "description": "",
+      "message": "",
+      "priority": "default",
+      "street": "Mad Wayne Thunder Dr",
+      "area": "Rockford Hills",
+      "county": "LosSantos",
+      "startTime": "12:36:16 AM",
+      "startDate": "2026-10-17",
+      "status": "Not Responded",
+      "updates": [
+        "Call dispatched to unit."
+      ]
+    },
+    {
+      "number": "69386",
+      "type": "Pursuit in progress",
+      "description": "",
+      "message": "",
+      "priority": "default",
+      "street": "Bay City Ave",
+      "area": "Del Perro",
+      "county": "LosSantos",
+      "startTime": "12:23:28 AM",
+      "startDate": "2026-10-17",
+      "status": "Responded",
+      "updates": [
+        "Call dispatched to unit."
+      ]
+    },
+    {
+      "number": "23664",
+      "type": "Pursuit in progress",
+      "description": "",
+      "message": "",
+      "priority": "default",
+      "street": "Los Santos Freeway",
+      "area": "Alta",
+      "county": "LosSantos",
+      "startTime": "12:18:09 AM",
+      "startDate": "2026-10-17",
+      "status": "Finished",
+      "updates": [
+        "Call dispatched to unit."
+      ]
+    },
+    {
+      "number": "21995",
+      "type": "Robbery in progress",
+      "description": "",
+      "message": "",
+      "priority": "default",
+      "street": "Clinton Ave",
+      "area": "Downtown Vinewood",
+      "county": "LosSantos",
+      "startTime": "12:12:11 AM",
+      "startDate": "2026-10-17",
+      "status": "Completed",
+      "updates": [
+        "Call dispatched to unit."
+      ]
+    }
+  ],
+  "history": [
+    {
+      "number": "21995",
+      "type": "Robbery in progress",
+      "description": "",
+      "message": "",
+      "priority": "default",
+      "street": "Clinton Ave",
+      "area": "Downtown Vinewood",
+      "county": "LosSantos",
+      "startTime": "12:12:11 AM",
+      "startDate": "2026-10-17",
+      "status": "Completed",
+      "updates": [
+        "Call dispatched to unit."
+      ]
+    },
+    {
+      "number": "23017",
+      "type": "Robbery in progress",
+      "description": "Holdup",
+      "message": "",
+      "priority": "default",
+      "street": "Innocence Blvd",
+      "area": "Strawberry",
+      "county": "LosSantos",
+      "startTime": "11:33:30 PM",
+      "startDate": "2026-10-16",
+      "status": "Completed",
+      "updates": [
+        "Call dispatched to unit."
+      ]
+    },
+    {
+      "number": "43209",
+      "type": "Robbery in progress",
+      "description": "Holdup",
+      "message": "",
+      "priority": "default",
+      "street": "North Rockford Dr",
+      "area": "Del Perro",
+      "county": "LosSantos",
+      "startTime": "11:32:58 PM",
+      "startDate": "2026-10-16",
+      "status": "Completed",
+      "updates": [
+        "Call dispatched to unit."
+      ]
+    },
+    {
+      "number": "68894",
+      "type": "Robbery in progress (Holdup)",
+      "description": "Armed holdup robbery in progress. Multiple suspects reported on scene.",
+      "message": "Dispatch broadcast: All units in Rockford Hills respond Code 3.",
+      "priority": "Code 3",
+      "street": "Mad Wayne Thunder Dr",
+      "area": "Rockford Hills",
+      "county": "LosSantos",
+      "startTime": "10:32:51 PM",
+      "startDate": "16/10/2026",
+      "status": "Completed",
+      "updates": [
+        "Call dispatched to unit.",
+        "Unit acknowledged - Responding Code 3"
+      ]
+    },
+    {
+      "number": "672",
+      "type": "Callout",
+      "description": "",
+      "message": "",
+      "priority": "Code 2",
+      "street": "Vinewood Blvd",
+      "area": "Los Santos",
+      "county": "Los Santos County",
+      "startTime": "10:30:54 pm",
+      "startDate": "16/10/2026",
+      "status": "Completed",
+      "updates": [
+        "Call dispatched to unit."
+      ]
+    }
+  ]
+}

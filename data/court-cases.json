@@ -1,0 +1,63 @@
+[
+  {
+    "caseNumber": "CR-2026-9773",
+    "offenderName": "Lawrence Baptiste",
+    "charges": [
+      "Impeding Flow of Traffic"
+    ],
+    "type": "Citation",
+    "filingOfficer": "John Davis",
+    "scheduledCourtDate": "31/10/2026",
+    "status": "Verdict Rendered",
+    "revealTimestamp": 1792178258138,
+    "verdict": "Plea Bargain",
+    "penalties": {
+      "fine": 2101,
+      "jailMonths": 0,
+      "probationMonths": 0,
+      "suspensionMonths": 0
+    },
+    "createdAt": "2026-10-16T19:15:38.149Z",
+    "resolvedAt": "2026-10-16T19:17:42.731Z"
+  },
+  {
+    "caseNumber": "CR-2026-8926",
+    "offenderName": "David McReary",
+    "charges": [],
+    "type": "Citation",
+    "filingOfficer": "John Davis",
+    "scheduledCourtDate": "31/10/2026",
+    "status": "Verdict Rendered",
+    "revealTimestamp": 1792177404885,
+    "verdict": "Guilty",
+    "penalties": {
+      "fine": 2007,
+      "jailMonths": 0,
+      "probationMonths": 0,
+      "suspensionMonths": 0
+    },
+    "createdAt": "2026-10-16T19:01:24.885Z",
+    "resolvedAt": "2026-10-16T19:03:24.892Z"
+  },
+  {
+    "caseNumber": "CR-2026-6779",
+    "offenderName": "Audrey Jackson",
+    "charges": [
+      "Speeding (Over 30+)"
+    ],
+    "type": "Citation",
+    "filingOfficer": "John Davis",
+    "scheduledCourtDate": "30/10/2026",
+    "status": "Verdict Rendered",
+    "revealTimestamp": 1792168418983,
+    "verdict": "Plea Bargain",
+    "penalties": {
+      "fine": 2002,
+      "jailMonths": 0,
+      "probationMonths": 0,
+      "suspensionMonths": 0
+    },
+    "createdAt": "2026-10-16T16:31:38.992Z",
+    "resolvedAt": "2026-10-16T16:33:43.345Z"
+  }
+]
